@@ -26,8 +26,14 @@ describe "Checker" do
     before(:each) do
       @sut = Checker.new
     end
-    it " Password should be more than 10 characters" do
-       @sut.check("12777777").should == false
+    it "should reject passwords that are less than 10 characters" do
+       @sut.check("ABC123ABC", true).should == false
+    end
+    it "should reject passwords that don't contain at least 1 special character" do
+       @sut.check("ABC123ABC123", true).should == false
+    end
+    it "should accept passwords that use an underscore as the special character" do
+      @sut.check("ABC123ABC123_", true).should == true
     end
   end
 end
