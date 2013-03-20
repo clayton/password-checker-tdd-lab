@@ -36,4 +36,21 @@ describe "Checker" do
       @sut.check("ABC123ABC123_", true).should == true
     end
   end
+  context "Feedback" do
+    before(:each) do
+      @sut = Checker.new
+    end
+    it "should tell us when our password is too short" do
+      @sut.check("ABC")
+      @sut.errors.include?("Your password is too short.").should == true
+    end
+    it "should tell us when our password doesn't have an alphanumeric character" do
+      @sut.check("128381838183813")
+      @sut.errors.include?("Your password must contain an alphanumeric character.").should == true
+    end
+    it "should tell admins that their password must be 10 characters" do
+      @sut.check("ABC!12345", true)
+      @sut.errors.include?("Your password must contain at least 10 characters.").should == true
+    end
+  end
 end
